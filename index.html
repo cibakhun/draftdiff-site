@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DraftDiff — AI draft analysis for League of Legends</title>
+  <meta name="description" content="DraftDiff analyzes League of Legends champion select with a transformer model and Monte-Carlo Tree Search, suggesting picks and bans with the reasoning behind them. Coming soon.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#080A0E">
+  <meta property="og:title" content="DraftDiff — AI draft analysis for League of Legends">
+  <meta property="og:description" content="A transformer model plus Monte-Carlo Tree Search evaluates the draft as it unfolds and suggests picks and bans with reasoning. Coming soon.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="#top" aria-label="DraftDiff — back to top">
+      <span class="brand-mark" aria-hidden="true"></span>
+      DraftDiff
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+      <a href="#how">How it works</a>
+      <a href="#engine">Engine</a>
+      <a href="#data">Data &amp; API</a>
+      <a href="#status">Status</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="container hero-inner">
+      <p class="hero-badges">
+        <span class="chip"><span class="chip-dot" aria-hidden="true"></span>In development</span>
+        <span class="chip chip--accent">Coming soon</span>
+      </p>
+      <h1 id="hero-title">See the draft <span class="hero-accent">the way an engine does</span>.</h1>
+      <p class="hero-sub">DraftDiff is a companion for League of Legends champion select. A transformer model paired with Monte-Carlo Tree Search evaluates the draft as it unfolds and suggests picks and bans — with the reasoning behind each one. The decision is always yours.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#how">How it works</a>
+        <a class="btn btn-secondary" href="#engine">Under the hood</a>
+      </div>
+      <p class="hero-specline mono">6-layer transformer &middot; ~6.4M parameters &middot; MCTS search &middot; trained on ~26k ranked matches</p>
+
+      <figure class="mockup">
+        <div class="mock-window" aria-hidden="true">
+          <div class="mock-titlebar">
+            <span class="mock-dots"><i></i><i></i><i></i></span>
+            <span class="mock-title">DraftDiff &middot; Titan V3.5</span>
+            <span class="mock-status"><i class="mock-status-dot"></i>Champion select &middot; live</span>
+          </div>
+          <div class="mock-bans">
+            <div class="mock-ban-group">
+              <span class="mock-ban-label">Blue bans</span>
+              <span class="mock-ban">Zed</span>
+              <span class="mock-ban">Draven</span>
+              <span class="mock-ban">Blitzcrank</span>
+              <span class="mock-ban mock-ban--empty"></span>
+              <span class="mock-ban mock-ban--empty"></span>
+            </div>
+            <div class="mock-ban-group mock-ban-group--red">
+              <span class="mock-ban-label">Red bans</span>
+              <span class="mock-ban">Kalista</span>
+              <span class="mock-ban">Yone</span>
+              <span class="mock-ban">Nidalee</span>
+              <span class="mock-ban mock-ban--empty"></span>
+              <span class="mock-ban mock-ban--empty"></span>
+            </div>
+          </div>
+          <div class="mock-board">
+            <ul class="mock-team mock-team--blue">
+              <li class="mock-slot mock-slot--filled">
+                <span class="mock-portrait">R</span>
+                <span class="mock-slot-meta"><strong>Rumble</strong><em>Top</em></span>
+              </li>
+              <li class="mock-slot mock-slot--filled">
+                <span class="mock-portrait">V</span>
+                <span class="mock-slot-meta"><strong>Vi</strong><em>Jungle</em></span>
+              </li>
+              <li class="mock-slot mock-slot--active">
+                <span class="mock-portrait mock-portrait--empty">?</span>
+                <span class="mock-slot-meta"><strong>Your pick</strong><em>Mid &middot; on the clock</em></span>
+              </li>
+              <li class="mock-slot">
+                <span class="mock-portrait mock-portrait--empty"></span>
+                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Bottom</em></span>
+              </li>
+              <li class="mock-slot">
+                <span class="mock-portrait mock-portrait--empty"></span>
+                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Support</em></span>
+              </li>
+            </ul>
+            <div class="mock-console">
+              <div class="mock-console-head">
+                <span class="mock-console-title">Suggestions &middot; pick 3 / blue</span>
+                <span class="mock-console-sub">TitanNet + MCTS</span>
+              </div>
+              <ol class="mock-suggestions">
+                <li class="mock-card mock-card--top">
+                  <span class="mock-rank">1</span>
+                  <span class="mock-card-body">
+                    <span class="mock-card-name">Orianna <em>Mid</em></span>
+                    <span class="mock-card-reason">Pairs with Vi engage &middot; safe into current red comp</span>
+                  </span>
+                  <span class="mock-card-val">&Delta;V +0.034</span>
+                </li>
+                <li class="mock-card">
+                  <span class="mock-rank">2</span>
+                  <span class="mock-card-body">
+                    <span class="mock-card-name">Azir <em>Mid</em></span>
+                    <span class="mock-card-reason">Scales for late game &middot; flexible vs remaining picks</span>
+                  </span>
+                  <span class="mock-card-val">&Delta;V +0.029</span>
+                </li>
+                <li class="mock-card">
+                  <span class="mock-rank">3</span>
+                  <span class="mock-card-body">
+                    <span class="mock-card-name">Syndra <em>Mid</em></span>
+                    <span class="mock-card-reason">Early lane pressure &middot; strong pick threat</span>
+                  </span>
+                  <span class="mock-card-val">&Delta;V +0.021</span>
+                </li>
+              </ol>
+              <div class="mock-console-foot">search: 1,024 simulated continuations &middot; depth 4 &middot; sample values</div>
+            </div>
+            <ul class="mock-team mock-team--red">
+              <li class="mock-slot mock-slot--filled">
+                <span class="mock-portrait">K</span>
+                <span class="mock-slot-meta"><strong>K'Sante</strong><em>Top</em></span>
+              </li>
+              <li class="mock-slot mock-slot--filled">
+                <span class="mock-portrait">L</span>
+                <span class="mock-slot-meta"><strong>Lee Sin</strong><em>Jungle</em></span>
+              </li>
+              <li class="mock-slot mock-slot--filled">
+                <span class="mock-portrait">A</span>
+                <span class="mock-slot-meta"><strong>Ahri</strong><em>Mid</em></span>
+              </li>
+              <li class="mock-slot">
+                <span class="mock-portrait mock-portrait--empty"></span>
+                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Bottom</em></span>
+              </li>
+              <li class="mock-slot">
+                <span class="mock-portrait mock-portrait--empty"></span>
+                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Support</em></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <figcaption class="mock-caption">Stylized illustration of the in-app draft console — not a screenshot. All numbers are sample values.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================ HOW IT WORKS ============================ -->
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">01 — How it works</p>
+        <h2 id="how-title">From draft state to ranked suggestions.</h2>
+        <p class="section-lede">DraftDiff follows champion select as it happens and turns each draft state into concrete, explained suggestions — in three steps.</p>
+      </div>
+      <div class="steps">
+        <article class="step-card">
+          <p class="step-num mono">01</p>
+          <h3>Champion select opens</h3>
+          <p>When champion select starts, DraftDiff reads the current draft state from the League Client: picks, bans, and whose turn it is. The board updates as the draft unfolds.</p>
+        </article>
+        <article class="step-card">
+          <p class="step-num mono">02</p>
+          <h3>The engine evaluates</h3>
+          <p>TitanNet — a 6-layer transformer encoder — scores the position, and Monte-Carlo Tree Search plays out likely draft continuations to test how each candidate pick or ban holds up several turns ahead.</p>
+        </article>
+        <article class="step-card">
+          <p class="step-num mono">03</p>
+          <h3>You decide</h3>
+          <p>DraftDiff shows ranked suggestions with the reasoning behind them. It never picks for you — the final call is always yours. It does not play the game, read game memory, or automate gameplay.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== ENGINE ============================== -->
+  <section class="section" id="engine" aria-labelledby="engine-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">02 — The engine</p>
+        <h2 id="engine-title">Small model, real search.</h2>
+        <p class="section-lede">Titan V3.5 is deliberately compact: a ~6.4M-parameter model that runs comfortably on consumer hardware, paired with tree search for lookahead.</p>
+      </div>
+      <div class="engine-grid">
+        <table class="spec-table">
+          <caption class="visually-hidden">TitanNet engine specifications</caption>
+          <tbody>
+            <tr><th scope="row">Engine</th><td>TitanNet (Titan V3.5)</td></tr>
+            <tr><th scope="row">Architecture</th><td>Transformer encoder &middot; 6 layers</td></tr>
+            <tr><th scope="row">Model width</th><td><code>d_model = 256</code></td></tr>
+            <tr><th scope="row">Parameters</th><td>~6.4M</td></tr>
+            <tr><th scope="row">Output heads</th><td>Policy (next pick/ban) + value (draft evaluation)</td></tr>
+            <tr><th scope="row">Search</th><td>Monte-Carlo Tree Search over draft continuations</td></tr>
+            <tr><th scope="row">Training data</th><td>~26,000 ranked matches (EUW), via Match-V5</td></tr>
+            <tr><th scope="row">Inference</th><td>Consumer CPUs and GPUs</td></tr>
+            <tr><th scope="row">Application</th><td>Desktop &middot; Python / PyQt6</td></tr>
+          </tbody>
+        </table>
+        <div class="engine-cards">
+          <article class="engine-card">
+            <h3>Policy head</h3>
+            <p>Trained to predict the next pick or ban from ~26,000 ranked drafts, the policy head proposes candidate moves that reflect how real drafts actually unfold.</p>
+          </article>
+          <article class="engine-card">
+            <h3>Value head</h3>
+            <p>The value head scores the overall draft state, giving the engine a consistent way to compare whole positions — not just isolated picks — when ranking a suggestion.</p>
+          </article>
+          <article class="engine-card">
+            <h3>Monte-Carlo Tree Search</h3>
+            <p>MCTS plays out likely continuations of the draft several turns deep, testing each candidate against plausible responses before anything is shown to the player.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== DATA & RIOT API USAGE ====================== -->
+  <section class="section data-band" id="data" aria-labelledby="data-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">03 — Data &amp; Riot API usage</p>
+        <h2 id="data-title">Exactly how the Riot API is used.</h2>
+        <p class="section-lede">This section exists for one reason: transparency about how DraftDiff uses data from the Riot Games API.</p>
+      </div>
+
+      <div class="facts">
+        <p class="facts-label mono">The short version</p>
+        <dl class="fact-grid">
+          <div class="fact">
+            <dt>Endpoints</dt>
+            <dd>Match-V5 (IDs, matches, timelines) + League-V4 ladder seeding</dd>
+          </div>
+          <div class="fact">
+            <dt>Purpose</dt>
+            <dd>Building the training dataset for the draft model</dd>
+          </div>
+          <div class="fact">
+            <dt>Storage</dt>
+            <dd>Internal research database — never redistributed</dd>
+          </div>
+          <div class="fact">
+            <dt>Rate limits</dt>
+            <dd>Respected by the collection pipeline</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="arch" role="img" aria-label="Data pipeline diagram: the Riot Games API (League-V4 ladder seeding plus Match-V5 match IDs, matches and timelines, rate-limit compliant) feeds an internal research dataset of about 26,000 ranked EUW matches, which is used to train TitanNet. The trained model powers the suggestions shown in the DraftDiff app.">
+        <div class="arch-zone arch-zone--dev">
+          <div class="arch-zone-head">
+            <span class="arch-zone-name">Data pipeline</span>
+            <span class="arch-zone-tag mono">offline batch &middot; the API key lives here, and only here</span>
+          </div>
+          <div class="arch-flow">
+            <div class="arch-node">
+              <span class="arch-node-kicker mono">Riot Games API</span>
+              <strong>Match-V5 + League-V4</strong>
+              <span class="arch-node-sub">ladder seeding, match IDs, matches + timelines &middot; rate-limit compliant</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true"><span>fetch</span></div>
+            <div class="arch-node">
+              <span class="arch-node-kicker mono">Research dataset</span>
+              <strong>~26,000 ranked matches</strong>
+              <span class="arch-node-sub">EUW &middot; internal storage, never redistributed</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true"><span>train</span></div>
+            <div class="arch-node">
+              <span class="arch-node-kicker mono">Training</span>
+              <strong>TitanNet</strong>
+              <span class="arch-node-sub">policy + value heads &middot; ~6.4M parameters &middot; powers the app's suggestions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-title">Endpoints used — the complete list</h3>
+      <div class="table-scroll">
+        <table class="endpoint-table">
+          <thead>
+            <tr><th scope="col">Endpoint</th><th scope="col">What it returns</th><th scope="col">When it is called</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>GET /lol/league/v4/&hellip;leagues/by-queue/{queue}</code></td>
+              <td>Ranked ladder entries — used only to seed which players' matches to sample</td>
+              <td>Dataset builds only</td>
+            </tr>
+            <tr>
+              <td><code>GET /lol/match/v5/matches/by-puuid/{puuid}/ids</code></td>
+              <td>Recent ranked match IDs for a sampled player</td>
+              <td>Dataset builds only</td>
+            </tr>
+            <tr>
+              <td><code>GET /lol/match/v5/matches/{matchId}</code></td>
+              <td>Match details — picks, bans, outcomes</td>
+              <td>Dataset builds only</td>
+            </tr>
+            <tr>
+              <td><code>GET /lol/match/v5/matches/{matchId}/timeline</code></td>
+              <td>Match timeline events</td>
+              <td>Dataset builds only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="assurance-grid">
+        <div class="assurance-card">
+          <h3>How the API is used</h3>
+          <ul class="mark-list mark-list--yes">
+            <li>Read-only match data: League-V4 ladder seeding, Match-V5 IDs, matches and timelines — nothing else</li>
+            <li>Batch dataset builds, separate from the app itself</li>
+            <li>Rate limits respected by the collection pipeline</li>
+            <li>Data used solely to train the draft model</li>
+          </ul>
+        </div>
+        <div class="assurance-card">
+          <h3>What never happens</h3>
+          <ul class="mark-list mark-list--no">
+            <li>No real-time Riot API calls during games</li>
+            <li>No per-player profiling, no public player lookups</li>
+            <li>No redistribution or resale of match data</li>
+            <li>No gameplay automation of any kind</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="callout">
+        <p><strong>Suggestion-only by design.</strong> DraftDiff suggests picks and bans during champion select and explains its reasoning — the player always makes the final call. It does not play the game, does not read game memory, and does not automate gameplay.</p>
+      </aside>
+
+      <aside class="reviewer-note">
+        <p class="reviewer-note-kicker mono">Reviewing a Riot Developer Portal application?</p>
+        <p>The endpoint table above is the complete scope of DraftDiff's Riot API usage. Match data collected through the API is used exclusively to build the training dataset for the draft model — it is never redistributed, resold, or exposed through player lookups, and <strong>no Riot API calls are made during live games</strong>.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================== STATUS ============================== -->
+  <section class="section" id="status" aria-labelledby="status-title">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">04 — Status</p>
+        <h2 id="status-title">In development. Coming soon.</h2>
+        <p class="section-lede">DraftDiff is currently an internal developer beta. The engine, the training pipeline, and the desktop client are under active development — release details will be announced on this page.</p>
+      </div>
+      <aside class="callout">
+        <p><strong>No sign-ups, no waitlist — on purpose.</strong> We would rather show a finished product than collect emails for an unfinished one. When DraftDiff is ready, this page is where you will find it.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================================ FAQ ================================ -->
+  <section class="section" id="faq" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">05 — FAQ</p>
+        <h2 id="faq-title">Honest answers to fair questions.</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <h3>Is this allowed by Riot Games?</h3>
+            <span class="faq-marker" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body">
+            <p>DraftDiff sits in the established category of champion-select assistance tools: it works with the draft phase only and makes suggestions — it never touches a live game, never reads game memory, and never automates gameplay. This page documents the project's Riot API usage in full, and the complete required disclaimer appears in the footer. DraftDiff is not endorsed by Riot Games.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <h3>Does it play the game for me?</h3>
+            <span class="faq-marker" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body">
+            <p>No. DraftDiff suggests picks and bans during champion select and explains its reasoning — the decision is always yours. It does not play the game, does not read game memory, and does not automate gameplay.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <h3>When can I use it?</h3>
+            <span class="faq-marker" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body">
+            <p>DraftDiff is in active development and not yet publicly available. There is no waitlist — release details will be announced on this page when the product is ready.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>
+            <h3>Where does the draft knowledge come from?</h3>
+            <span class="faq-marker" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body">
+            <p>From a model trained on ~26,000 ranked matches collected through the Riot Games API (Match-V5 and League-V4, as documented above). The data is used solely for training and is never redistributed.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="DraftDiff — back to top">
+          <span class="brand-mark" aria-hidden="true"></span>
+          DraftDiff
+        </a>
+        <p class="footer-blurb">AI draft analysis for League of Legends champion select.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#data">Data &amp; API usage</a>
+        <a href="#status">Status</a>
+        <a href="#top">Back to top</a>
+      </nav>
+    </div>
+    <p class="legal">DraftDiff isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends &copy; Riot Games, Inc.</p>
+    <p class="footer-meta">&copy; 2026 DraftDiff &middot; Developer Beta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', function () {
+    var open = document.body.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.closest('a') && document.body.classList.contains('nav-open')) {
+      document.body.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
+</body>
+</html>
