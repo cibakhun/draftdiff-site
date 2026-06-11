@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DraftDiff — AI draft analysis for League of Legends</title>
-  <meta name="description" content="DraftDiff analyzes League of Legends champion select with a transformer model and Monte-Carlo Tree Search, suggesting picks and bans with the reasoning behind them. Coming soon.">
+  <meta name="description" content="DraftDiff analyzes League of Legends champion select and suggests picks and bans with the reasoning behind each one. The decision is always yours. Coming soon.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#080A0E">
   <meta property="og:title" content="DraftDiff — AI draft analysis for League of Legends">
-  <meta property="og:description" content="A transformer model plus Monte-Carlo Tree Search evaluates the draft as it unfolds and suggests picks and bans with reasoning. Coming soon.">
+  <meta property="og:description" content="DraftDiff evaluates the draft as it unfolds and suggests picks and bans with reasoning — you make the final call. Coming soon.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
     </a>
     <nav class="site-nav" id="site-nav" aria-label="Main navigation">
       <a href="#how">How it works</a>
-      <a href="#engine">Engine</a>
+      <a href="#engine">What it weighs</a>
       <a href="#data">Data &amp; API</a>
       <a href="#status">Status</a>
       <a href="#faq">FAQ</a>
@@ -48,18 +48,18 @@
         <span class="chip chip--accent">Coming soon</span>
       </p>
       <h1 id="hero-title">See the draft <span class="hero-accent">the way an engine does</span>.</h1>
-      <p class="hero-sub">DraftDiff is a companion for League of Legends champion select. A transformer model paired with Monte-Carlo Tree Search evaluates the draft as it unfolds and suggests picks and bans — with the reasoning behind each one. The decision is always yours.</p>
+      <p class="hero-sub">DraftDiff is a companion for League of Legends champion select. It reads the draft as it unfolds and suggests picks and bans — with the reasoning behind each one. The decision is always yours.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#how">How it works</a>
-        <a class="btn btn-secondary" href="#engine">Under the hood</a>
+        <a class="btn btn-secondary" href="#engine">What it weighs</a>
       </div>
-      <p class="hero-specline mono">6-layer transformer &middot; ~6.4M parameters &middot; MCTS search &middot; trained on ~26k ranked matches</p>
+      <p class="hero-specline mono">Learns from real ranked games &middot; suggestions with reasoning &middot; you stay in control</p>
 
       <figure class="mockup">
         <div class="mock-window" aria-hidden="true">
           <div class="mock-titlebar">
             <span class="mock-dots"><i></i><i></i><i></i></span>
-            <span class="mock-title">DraftDiff &middot; Titan V3.5</span>
+            <span class="mock-title">DraftDiff</span>
             <span class="mock-status"><i class="mock-status-dot"></i>Champion select &middot; live</span>
           </div>
           <div class="mock-bans">
@@ -106,7 +106,7 @@
             <div class="mock-console">
               <div class="mock-console-head">
                 <span class="mock-console-title">Suggestions &middot; pick 3 / blue</span>
-                <span class="mock-console-sub">TitanNet + MCTS</span>
+                <span class="mock-console-sub">Draft analysis</span>
               </div>
               <ol class="mock-suggestions">
                 <li class="mock-card mock-card--top">
@@ -115,7 +115,7 @@
                     <span class="mock-card-name">Orianna <em>Mid</em></span>
                     <span class="mock-card-reason">Pairs with Vi engage &middot; safe into current red comp</span>
                   </span>
-                  <span class="mock-card-val">&Delta;V +0.034</span>
+                  <span class="mock-card-val">Fit 94</span>
                 </li>
                 <li class="mock-card">
                   <span class="mock-rank">2</span>
@@ -123,7 +123,7 @@
                     <span class="mock-card-name">Azir <em>Mid</em></span>
                     <span class="mock-card-reason">Scales for late game &middot; flexible vs remaining picks</span>
                   </span>
-                  <span class="mock-card-val">&Delta;V +0.029</span>
+                  <span class="mock-card-val">Fit 88</span>
                 </li>
                 <li class="mock-card">
                   <span class="mock-rank">3</span>
@@ -131,10 +131,10 @@
                     <span class="mock-card-name">Syndra <em>Mid</em></span>
                     <span class="mock-card-reason">Early lane pressure &middot; strong pick threat</span>
                   </span>
-                  <span class="mock-card-val">&Delta;V +0.021</span>
+                  <span class="mock-card-val">Fit 82</span>
                 </li>
               </ol>
-              <div class="mock-console-foot">search: 1,024 simulated continuations &middot; depth 4 &middot; sample values</div>
+              <div class="mock-console-foot">Weighed against likely draft continuations &middot; sample values</div>
             </div>
             <ul class="mock-team mock-team--red">
               <li class="mock-slot mock-slot--filled">
@@ -181,8 +181,8 @@
         </article>
         <article class="step-card">
           <p class="step-num mono">02</p>
-          <h3>The engine evaluates</h3>
-          <p>TitanNet — a 6-layer transformer encoder — scores the position, and Monte-Carlo Tree Search plays out likely draft continuations to test how each candidate pick or ban holds up several turns ahead.</p>
+          <h3>It evaluates the draft</h3>
+          <p>DraftDiff scores the current position and plays out likely continuations of the draft, testing how each candidate pick or ban holds up several turns ahead.</p>
         </article>
         <article class="step-card">
           <p class="step-num mono">03</p>
@@ -193,43 +193,30 @@
     </div>
   </section>
 
-  <!-- ============================== ENGINE ============================== -->
+  <!-- ============================== WHAT IT WEIGHS ============================== -->
   <section class="section" id="engine" aria-labelledby="engine-title">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">02 — The engine</p>
-        <h2 id="engine-title">Small model, real search.</h2>
-        <p class="section-lede">Titan V3.5 is deliberately compact: a ~6.4M-parameter model that runs comfortably on consumer hardware, paired with tree search for lookahead.</p>
+        <p class="eyebrow">02 — What it weighs</p>
+        <h2 id="engine-title">It reads the whole board, not just one pick.</h2>
+        <p class="section-lede">DraftDiff looks at how the five picks fit together and how they stand against the enemy — then explains why each suggestion makes sense right now.</p>
       </div>
-      <div class="engine-grid">
-        <table class="spec-table">
-          <caption class="visually-hidden">TitanNet engine specifications</caption>
-          <tbody>
-            <tr><th scope="row">Engine</th><td>TitanNet (Titan V3.5)</td></tr>
-            <tr><th scope="row">Architecture</th><td>Transformer encoder &middot; 6 layers</td></tr>
-            <tr><th scope="row">Model width</th><td><code>d_model = 256</code></td></tr>
-            <tr><th scope="row">Parameters</th><td>~6.4M</td></tr>
-            <tr><th scope="row">Output heads</th><td>Policy (next pick/ban) + value (draft evaluation)</td></tr>
-            <tr><th scope="row">Search</th><td>Monte-Carlo Tree Search over draft continuations</td></tr>
-            <tr><th scope="row">Training data</th><td>~26,000 ranked matches (EUW), via Match-V5</td></tr>
-            <tr><th scope="row">Inference</th><td>Consumer CPUs and GPUs</td></tr>
-            <tr><th scope="row">Application</th><td>Desktop &middot; Python / PyQt6</td></tr>
-          </tbody>
-        </table>
-        <div class="engine-cards">
-          <article class="engine-card">
-            <h3>Policy head</h3>
-            <p>Trained to predict the next pick or ban from ~26,000 ranked drafts, the policy head proposes candidate moves that reflect how real drafts actually unfold.</p>
-          </article>
-          <article class="engine-card">
-            <h3>Value head</h3>
-            <p>The value head scores the overall draft state, giving the engine a consistent way to compare whole positions — not just isolated picks — when ranking a suggestion.</p>
-          </article>
-          <article class="engine-card">
-            <h3>Monte-Carlo Tree Search</h3>
-            <p>MCTS plays out likely continuations of the draft several turns deep, testing each candidate against plausible responses before anything is shown to the player.</p>
-          </article>
-        </div>
+      <div class="steps">
+        <article class="step-card">
+          <p class="step-num mono">A</p>
+          <h3>Team composition</h3>
+          <p>It weighs how the picks fit together — damage balance, engage, and front-to-back potential — and flags where a composition is becoming one-dimensional.</p>
+        </article>
+        <article class="step-card">
+          <p class="step-num mono">B</p>
+          <h3>Matchups &amp; counters</h3>
+          <p>It considers how a pick fares into what the enemy has already shown, and what they are likely to pick or ban next.</p>
+        </article>
+        <article class="step-card">
+          <p class="step-num mono">C</p>
+          <h3>Draft timing</h3>
+          <p>It reads pick and ban order: what is safe to show now, what is worth saving, and how a choice holds up as the remaining slots fill in.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -265,7 +252,7 @@
         </dl>
       </div>
 
-      <div class="arch" role="img" aria-label="Data pipeline diagram: the Riot Games API (League-V4 ladder seeding plus Match-V5 match IDs, matches and timelines, rate-limit compliant) feeds an internal research dataset of about 26,000 ranked EUW matches, which is used to train TitanNet. The trained model powers the suggestions shown in the DraftDiff app.">
+      <div class="arch" role="img" aria-label="Data pipeline diagram: the Riot Games API (League-V4 ladder seeding plus Match-V5 match IDs, matches and timelines, rate-limit compliant) feeds an internal research dataset of about 26,000 ranked EUW matches, which is used to train the draft model that powers the suggestions shown in the DraftDiff app.">
         <div class="arch-zone arch-zone--dev">
           <div class="arch-zone-head">
             <span class="arch-zone-name">Data pipeline</span>
@@ -286,8 +273,8 @@
             <div class="arch-arrow" aria-hidden="true"><span>train</span></div>
             <div class="arch-node">
               <span class="arch-node-kicker mono">Training</span>
-              <strong>TitanNet</strong>
-              <span class="arch-node-sub">policy + value heads &middot; ~6.4M parameters &middot; powers the app's suggestions</span>
+              <strong>The draft model</strong>
+              <span class="arch-node-sub">learns from the dataset &middot; powers the app's suggestions</span>
             </div>
           </div>
         </div>
@@ -411,7 +398,7 @@
             <span class="faq-marker" aria-hidden="true"></span>
           </summary>
           <div class="faq-body">
-            <p>From a model trained on ~26,000 ranked matches collected through the Riot Games API (Match-V5 and League-V4, as documented above). The data is used solely for training and is never redistributed.</p>
+            <p>From a model trained on ~26,000 ranked matches collected through the Riot Games API (the endpoints listed above). The data is used solely for training and is never redistributed.</p>
           </div>
         </details>
       </div>
