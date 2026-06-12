@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DraftDiff — AI draft analysis for League of Legends</title>
-  <meta name="description" content="DraftDiff analyzes League of Legends champion select and suggests picks and bans with the reasoning behind each one. The decision is always yours. Coming soon.">
+  <title>Pyxle — AI draft analysis for League of Legends</title>
+  <meta name="description" content="Pyxle analyzes League of Legends champion select and suggests picks and bans with the reasoning behind each one. The decision is always yours. Coming soon.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#080A0E">
-  <meta property="og:title" content="DraftDiff — AI draft analysis for League of Legends">
-  <meta property="og:description" content="DraftDiff evaluates the draft as it unfolds and suggests picks and bans with reasoning — you make the final call. Coming soon.">
+  <meta property="og:title" content="Pyxle — AI draft analysis for League of Legends">
+  <meta property="og:description" content="Pyxle evaluates the draft as it unfolds and suggests picks and bans with reasoning — you make the final call. Coming soon.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,9 +20,9 @@
 
 <header class="site-header">
   <div class="container nav-row">
-    <a class="brand" href="#top" aria-label="DraftDiff — back to top">
+    <a class="brand" href="#top" aria-label="Pyxle — back to top">
       <span class="brand-mark" aria-hidden="true"></span>
-      DraftDiff
+      Pyxle
     </a>
     <nav class="site-nav" id="site-nav" aria-label="Main navigation">
       <a href="#how">How it works</a>
@@ -48,7 +48,7 @@
         <span class="chip chip--accent">Coming soon</span>
       </p>
       <h1 id="hero-title">See the draft <span class="hero-accent">the way an engine does</span>.</h1>
-      <p class="hero-sub">DraftDiff is a companion for League of Legends champion select. It reads the draft as it unfolds and suggests picks and bans — with the reasoning behind each one. The decision is always yours.</p>
+      <p class="hero-sub">Pyxle is a companion for League of Legends champion select. It reads the draft as it unfolds and suggests picks and bans — with the reasoning behind each one. The decision is always yours.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#how">How it works</a>
         <a class="btn btn-secondary" href="#engine">What it weighs</a>
@@ -59,7 +59,7 @@
         <div class="mock-window" aria-hidden="true">
           <div class="mock-titlebar">
             <span class="mock-dots"><i></i><i></i><i></i></span>
-            <span class="mock-title">DraftDiff</span>
+            <span class="mock-title">Pyxle</span>
             <span class="mock-status"><i class="mock-status-dot"></i>Champion select &middot; live</span>
           </div>
           <div class="mock-bans">
@@ -171,23 +171,23 @@
       <div class="section-head">
         <p class="eyebrow">01 — How it works</p>
         <h2 id="how-title">From draft state to ranked suggestions.</h2>
-        <p class="section-lede">DraftDiff follows champion select as it happens and turns each draft state into concrete, explained suggestions — in three steps.</p>
+        <p class="section-lede">Pyxle follows champion select as it happens and turns each draft state into concrete, explained suggestions — in three steps.</p>
       </div>
       <div class="steps">
         <article class="step-card">
           <p class="step-num mono">01</p>
           <h3>Champion select opens</h3>
-          <p>When champion select starts, DraftDiff reads the current draft state from the League Client: picks, bans, and whose turn it is. The board updates as the draft unfolds.</p>
+          <p>When champion select starts, Pyxle reads the current draft state from the League Client: picks, bans, and whose turn it is. The board updates as the draft unfolds.</p>
         </article>
         <article class="step-card">
           <p class="step-num mono">02</p>
           <h3>It evaluates the draft</h3>
-          <p>DraftDiff scores the current position and plays out likely continuations of the draft, testing how each candidate pick or ban holds up several turns ahead.</p>
+          <p>Pyxle scores the current position and plays out likely continuations of the draft, testing how each candidate pick or ban holds up several turns ahead.</p>
         </article>
         <article class="step-card">
           <p class="step-num mono">03</p>
           <h3>You decide</h3>
-          <p>DraftDiff shows ranked suggestions with the reasoning behind them. It never picks for you — the final call is always yours. It does not play the game, read game memory, or automate gameplay.</p>
+          <p>Pyxle shows ranked suggestions with the reasoning behind them. It never picks for you — the final call is always yours. It does not play the game, read game memory, or automate gameplay.</p>
         </article>
       </div>
     </div>
@@ -199,7 +199,7 @@
       <div class="section-head">
         <p class="eyebrow">02 — What it weighs</p>
         <h2 id="engine-title">It reads the whole board, not just one pick.</h2>
-        <p class="section-lede">DraftDiff looks at how the five picks fit together and how they stand against the enemy — then explains why each suggestion makes sense right now.</p>
+        <p class="section-lede">Pyxle looks at how the five picks fit together and how they stand against the enemy — then explains why each suggestion makes sense right now.</p>
       </div>
       <div class="steps">
         <article class="step-card">
@@ -227,7 +227,7 @@
       <div class="section-head">
         <p class="eyebrow">03 — Data &amp; Riot API usage</p>
         <h2 id="data-title">Exactly how the Riot API is used.</h2>
-        <p class="section-lede">This section exists for one reason: transparency about how DraftDiff uses data from the Riot Games API.</p>
+        <p class="section-lede">This section exists for one reason: transparency about how Pyxle uses data from the Riot Games API.</p>
       </div>
 
       <div class="facts">
@@ -252,7 +252,7 @@
         </dl>
       </div>
 
-      <div class="arch" role="img" aria-label="Data pipeline diagram: the Riot Games API (League-V4 ladder seeding plus Match-V5 match IDs, matches and timelines, rate-limit compliant) feeds an internal research dataset of about 26,000 ranked EUW matches, which is used to train the draft model that powers the suggestions shown in the DraftDiff app.">
+      <div class="arch" role="img" aria-label="Data pipeline diagram: the Riot Games API (League-V4 ladder seeding plus Match-V5 match IDs, matches and timelines, rate-limit compliant) feeds an internal research dataset of about 26,000 ranked EUW matches, which is used to train the draft model that powers the suggestions shown in the Pyxle app.">
         <div class="arch-zone arch-zone--dev">
           <div class="arch-zone-head">
             <span class="arch-zone-name">Data pipeline</span>
@@ -333,12 +333,12 @@
       </div>
 
       <aside class="callout">
-        <p><strong>Suggestion-only by design.</strong> DraftDiff suggests picks and bans during champion select and explains its reasoning — the player always makes the final call. It does not play the game, does not read game memory, and does not automate gameplay.</p>
+        <p><strong>Suggestion-only by design.</strong> Pyxle suggests picks and bans during champion select and explains its reasoning — the player always makes the final call. It does not play the game, does not read game memory, and does not automate gameplay.</p>
       </aside>
 
       <aside class="reviewer-note">
         <p class="reviewer-note-kicker mono">Reviewing a Riot Developer Portal application?</p>
-        <p>The endpoint table above is the complete scope of DraftDiff's Riot API usage. Match data collected through the API is used exclusively to build the training dataset for the draft model — it is never redistributed, resold, or exposed through player lookups, and <strong>no Riot API calls are made during live games</strong>.</p>
+        <p>The endpoint table above is the complete scope of Pyxle's Riot API usage. Match data collected through the API is used exclusively to build the training dataset for the draft model — it is never redistributed, resold, or exposed through player lookups, and <strong>no Riot API calls are made during live games</strong>.</p>
       </aside>
     </div>
   </section>
@@ -349,10 +349,10 @@
       <div class="section-head">
         <p class="eyebrow">04 — Status</p>
         <h2 id="status-title">In development. Coming soon.</h2>
-        <p class="section-lede">DraftDiff is currently an internal developer beta. The engine, the training pipeline, and the desktop client are under active development — release details will be announced on this page.</p>
+        <p class="section-lede">Pyxle is currently an internal developer beta. The engine, the training pipeline, and the desktop client are under active development — release details will be announced on this page.</p>
       </div>
       <aside class="callout">
-        <p><strong>No sign-ups, no waitlist — on purpose.</strong> We would rather show a finished product than collect emails for an unfinished one. When DraftDiff is ready, this page is where you will find it.</p>
+        <p><strong>No sign-ups, no waitlist — on purpose.</strong> We would rather show a finished product than collect emails for an unfinished one. When Pyxle is ready, this page is where you will find it.</p>
       </aside>
     </div>
   </section>
@@ -371,7 +371,7 @@
             <span class="faq-marker" aria-hidden="true"></span>
           </summary>
           <div class="faq-body">
-            <p>DraftDiff sits in the established category of champion-select assistance tools: it works with the draft phase only and makes suggestions — it never touches a live game, never reads game memory, and never automates gameplay. This page documents the project's Riot API usage in full, and the complete required disclaimer appears in the footer. DraftDiff is not endorsed by Riot Games.</p>
+            <p>Pyxle sits in the established category of champion-select assistance tools: it works with the draft phase only and makes suggestions — it never touches a live game, never reads game memory, and never automates gameplay. This page documents the project's Riot API usage in full, and the complete required disclaimer appears in the footer. Pyxle is not endorsed by Riot Games.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -380,7 +380,7 @@
             <span class="faq-marker" aria-hidden="true"></span>
           </summary>
           <div class="faq-body">
-            <p>No. DraftDiff suggests picks and bans during champion select and explains its reasoning — the decision is always yours. It does not play the game, does not read game memory, and does not automate gameplay.</p>
+            <p>No. Pyxle suggests picks and bans during champion select and explains its reasoning — the decision is always yours. It does not play the game, does not read game memory, and does not automate gameplay.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -389,7 +389,7 @@
             <span class="faq-marker" aria-hidden="true"></span>
           </summary>
           <div class="faq-body">
-            <p>DraftDiff is in active development and not yet publicly available. There is no waitlist — release details will be announced on this page when the product is ready.</p>
+            <p>Pyxle is in active development and not yet publicly available. There is no waitlist — release details will be announced on this page when the product is ready.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -412,9 +412,9 @@
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
-        <a class="brand" href="#top" aria-label="DraftDiff — back to top">
+        <a class="brand" href="#top" aria-label="Pyxle — back to top">
           <span class="brand-mark" aria-hidden="true"></span>
-          DraftDiff
+          Pyxle
         </a>
         <p class="footer-blurb">AI draft analysis for League of Legends champion select.</p>
       </div>
@@ -424,8 +424,8 @@
         <a href="#top">Back to top</a>
       </nav>
     </div>
-    <p class="legal">DraftDiff isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends &copy; Riot Games, Inc.</p>
-    <p class="footer-meta">&copy; 2026 DraftDiff &middot; Developer Beta</p>
+    <p class="legal">Pyxle isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends &copy; Riot Games, Inc.</p>
+    <p class="footer-meta">&copy; 2026 Pyxle &middot; Developer Beta</p>
   </div>
 </footer>
 
