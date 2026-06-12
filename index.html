@@ -4,346 +4,246 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pyxle — AI draft analysis for League of Legends</title>
-  <meta name="description" content="Pyxle analyzes League of Legends champion select and suggests picks and bans with the reasoning behind each one. The decision is always yours. Coming soon.">
+  <meta name="description" content="Pyxle reads League of Legends champion select and suggests picks and bans with the reasoning behind each one. The decision is always yours. In development.">
   <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#07090E">
+  <meta name="theme-color" content="#0C0D11">
   <meta property="og:title" content="Pyxle — AI draft analysis for League of Legends">
-  <meta property="og:description" content="Pyxle evaluates the draft as it unfolds and suggests picks and bans with reasoning — you make the final call. Coming soon.">
+  <meta property="og:description" content="Pyxle evaluates the draft as it unfolds and suggests picks and bans with reasoning — you make the final call. In development.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026061201">
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2026061202">
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<script>document.documentElement.classList.add('js');</script>
 
-<div class="page-frame" aria-hidden="true"></div>
-<div class="scanlines" aria-hidden="true"></div>
+<div class="cursor-glow" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
-<header class="site-header">
-  <div class="container nav-row">
+<header class="nav" id="nav">
+  <div class="nav-row">
     <a class="brand" href="#top" aria-label="Pyxle — back to top">
-      <span class="brand-mark" aria-hidden="true">
-        <span class="px px1"></span><span class="px px2"></span>
-        <span class="px px3"></span><span class="px px4"></span>
-      </span>
-      <span class="brand-word">Pyxle</span>
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span>Pyxle</span>
     </a>
-    <nav class="site-nav" id="site-nav" aria-label="Main navigation">
-      <a href="#how">How it works</a>
-      <a href="#engine">What it weighs</a>
+    <nav class="menu" id="menu" aria-label="Main">
+      <a href="#how">How it thinks</a>
+      <a href="#weighs">What it weighs</a>
       <a href="#data">Data &amp; API</a>
       <a href="#status">Status</a>
       <a href="#faq">FAQ</a>
+      <a class="cta cta--ghost cta--sm" href="#how">Enter the draft <span class="cta-arrow" aria-hidden="true">&rarr;</span></a>
     </nav>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
-      <span></span>
-      <span></span>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu">
+      <span></span><span></span>
     </button>
   </div>
 </header>
 
-<main id="main">
+<main id="top">
 
   <!-- ============================== HERO ============================== -->
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="hero-grid" aria-hidden="true"></div>
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <p class="hero-badges">
-          <span class="chip"><span class="chip-dot" aria-hidden="true"></span>In development</span>
-          <span class="chip chip--accent">Coming soon</span>
-        </p>
-        <h1 id="hero-title">
-          <span class="h1-line">See the draft</span>
-          <span class="h1-line h1-line--accent"><span class="hero-accent" data-glitch="the way an engine">the&nbsp;way an engine</span></span>
-          <span class="h1-line">does<span class="h1-stop">.</span></span>
+  <section class="stage">
+    <canvas class="field" id="field" aria-hidden="true"></canvas>
+    <div class="hero wrap">
+      <div class="hero-inner">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Champion-select engine <span class="div" aria-hidden="true"></span> <b>In development</b></p>
+        <h1>
+          <span class="w" style="animation-delay:.04s">See</span> <span class="w" style="animation-delay:.10s">the</span> <span class="w" style="animation-delay:.16s">draft</span><br>
+          <span class="w" style="animation-delay:.26s">the</span> <span class="w" style="animation-delay:.32s">way</span> <span class="w" style="animation-delay:.38s">the</span> <span class="w" style="animation-delay:.44s">engine</span> <span class="w uv" style="animation-delay:.52s">thinks</span>.
         </h1>
-        <p class="hero-sub">Pyxle is a companion for League of Legends champion select. It reads the draft as it unfolds and suggests picks and bans — with the reasoning behind each one. The decision is always yours.</p>
+        <p class="hero-sub">Pyxle reads champion select as it unfolds and plays every position forward — surfacing the strongest pick and the reasoning behind it. The decision is always yours.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="#how">How it works <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
-          <a class="btn btn-secondary" href="#engine">What it weighs</a>
+          <a class="cta cta--primary cta--lg" href="#how">See how it works <span class="cta-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="cta cta--ghost cta--lg" href="#weighs">What it weighs</a>
         </div>
-        <p class="hero-specline mono">Learns from real ranked games <span class="dot-sep" aria-hidden="true"></span> suggestions with reasoning <span class="dot-sep" aria-hidden="true"></span> you stay in control</p>
-      </div>
-
-      <figure class="mockup">
-        <span class="hud-corner hud-corner--tl" aria-hidden="true"></span>
-        <span class="hud-corner hud-corner--tr" aria-hidden="true"></span>
-        <span class="hud-corner hud-corner--bl" aria-hidden="true"></span>
-        <span class="hud-corner hud-corner--br" aria-hidden="true"></span>
-        <div class="mock-window" aria-hidden="true">
-          <div class="mock-titlebar">
-            <span class="mock-dots"><i></i><i></i><i></i></span>
-            <span class="mock-title">Pyxle</span>
-            <span class="mock-status"><i class="mock-status-dot"></i>Champion select &middot; live</span>
-          </div>
-          <div class="mock-bans">
-            <div class="mock-ban-group">
-              <span class="mock-ban-label">Blue bans</span>
-              <span class="mock-ban">Zed</span>
-              <span class="mock-ban">Draven</span>
-              <span class="mock-ban">Blitzcrank</span>
-              <span class="mock-ban mock-ban--empty"></span>
-              <span class="mock-ban mock-ban--empty"></span>
-            </div>
-            <div class="mock-ban-group mock-ban-group--red">
-              <span class="mock-ban-label">Red bans</span>
-              <span class="mock-ban">Kalista</span>
-              <span class="mock-ban">Yone</span>
-              <span class="mock-ban">Nidalee</span>
-              <span class="mock-ban mock-ban--empty"></span>
-              <span class="mock-ban mock-ban--empty"></span>
-            </div>
-          </div>
-          <div class="mock-board">
-            <ul class="mock-team mock-team--blue">
-              <li class="mock-slot mock-slot--filled">
-                <span class="mock-portrait">R</span>
-                <span class="mock-slot-meta"><strong>Rumble</strong><em>Top</em></span>
-              </li>
-              <li class="mock-slot mock-slot--filled">
-                <span class="mock-portrait">V</span>
-                <span class="mock-slot-meta"><strong>Vi</strong><em>Jungle</em></span>
-              </li>
-              <li class="mock-slot mock-slot--active">
-                <span class="mock-portrait mock-portrait--empty">?</span>
-                <span class="mock-slot-meta"><strong>Your pick</strong><em>Mid &middot; on the clock</em></span>
-              </li>
-              <li class="mock-slot">
-                <span class="mock-portrait mock-portrait--empty"></span>
-                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Bottom</em></span>
-              </li>
-              <li class="mock-slot">
-                <span class="mock-portrait mock-portrait--empty"></span>
-                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Support</em></span>
-              </li>
-            </ul>
-            <div class="mock-console">
-              <div class="mock-console-head">
-                <span class="mock-console-title">Suggestions &middot; pick 3 / blue</span>
-                <span class="mock-console-sub">Draft analysis</span>
-              </div>
-              <ol class="mock-suggestions">
-                <li class="mock-card mock-card--top">
-                  <span class="mock-rank">1</span>
-                  <span class="mock-card-body">
-                    <span class="mock-card-name">Orianna <em>Mid</em></span>
-                    <span class="mock-card-reason">Pairs with Vi engage &middot; safe into current red comp</span>
-                  </span>
-                  <span class="mock-card-val">Fit 94</span>
-                </li>
-                <li class="mock-card">
-                  <span class="mock-rank">2</span>
-                  <span class="mock-card-body">
-                    <span class="mock-card-name">Azir <em>Mid</em></span>
-                    <span class="mock-card-reason">Scales for late game &middot; flexible vs remaining picks</span>
-                  </span>
-                  <span class="mock-card-val">Fit 88</span>
-                </li>
-                <li class="mock-card">
-                  <span class="mock-rank">3</span>
-                  <span class="mock-card-body">
-                    <span class="mock-card-name">Syndra <em>Mid</em></span>
-                    <span class="mock-card-reason">Early lane pressure &middot; strong pick threat</span>
-                  </span>
-                  <span class="mock-card-val">Fit 82</span>
-                </li>
-              </ol>
-              <div class="mock-console-foot">Weighed against likely draft continuations &middot; sample values</div>
-            </div>
-            <ul class="mock-team mock-team--red">
-              <li class="mock-slot mock-slot--filled">
-                <span class="mock-portrait">K</span>
-                <span class="mock-slot-meta"><strong>K'Sante</strong><em>Top</em></span>
-              </li>
-              <li class="mock-slot mock-slot--filled">
-                <span class="mock-portrait">L</span>
-                <span class="mock-slot-meta"><strong>Lee Sin</strong><em>Jungle</em></span>
-              </li>
-              <li class="mock-slot mock-slot--filled">
-                <span class="mock-portrait">A</span>
-                <span class="mock-slot-meta"><strong>Ahri</strong><em>Mid</em></span>
-              </li>
-              <li class="mock-slot">
-                <span class="mock-portrait mock-portrait--empty"></span>
-                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Bottom</em></span>
-              </li>
-              <li class="mock-slot">
-                <span class="mock-portrait mock-portrait--empty"></span>
-                <span class="mock-slot-meta"><strong>&mdash;</strong><em>Support</em></span>
-              </li>
-            </ul>
-          </div>
+        <div class="readout" role="img" aria-label="Live: now solving pick 3 for blue, top recommendation Orianna at fit 94.">
+          <div class="readout-cell"><span class="readout-k">Now solving</span><span class="readout-v"><span class="live-dot" aria-hidden="true"></span>Pick 3 · Blue</span></div>
+          <div class="readout-cell"><span class="readout-k">Reads</span><span class="readout-v">The whole 5×5 board</span></div>
+          <div class="readout-cell"><span class="readout-k">Top pick</span><span class="readout-v">Orianna <span class="pill">· fit 94</span></span></div>
         </div>
-        <figcaption class="mock-caption">Stylized illustration of the in-app draft console — not a screenshot. All numbers are sample values.</figcaption>
-      </figure>
-    </div>
-
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>Champion select</span><span class="marquee-star">✦</span>
-        <span>Picks &amp; bans</span><span class="marquee-star">✦</span>
-        <span>Reasoning, not just rankings</span><span class="marquee-star">✦</span>
-        <span>You make the final call</span><span class="marquee-star">✦</span>
-        <span>Champion select</span><span class="marquee-star">✦</span>
-        <span>Picks &amp; bans</span><span class="marquee-star">✦</span>
-        <span>Reasoning, not just rankings</span><span class="marquee-star">✦</span>
-        <span>You make the final call</span><span class="marquee-star">✦</span>
       </div>
     </div>
+    <div class="hero-foot wrap" style="max-width:none;">
+      <span class="legend"><span class="swatch" aria-hidden="true"></span> Ultraviolet marks the engine's focus moving across the board</span>
+      <span>Pyxle · champion-select companion · <span class="mono" id="gen">gen 0</span></span>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><i></i></div>
   </section>
 
-  <!-- ============================ HOW IT WORKS ============================ -->
-  <section class="section" id="how" aria-labelledby="how-title">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow"><span class="eyebrow-idx">01</span> How it works</p>
-        <h2 id="how-title">From draft state to ranked suggestions.</h2>
+  <!-- ============================== MARQUEE ============================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee">
+      <span>Champion select</span><span class="star">✦</span>
+      <span>Picks &amp; bans</span><span class="star">✦</span>
+      <span>Reasoning, not just rankings</span><span class="star">✦</span>
+      <span>Plays the draft forward</span><span class="star">✦</span>
+      <span>You make the final call</span><span class="star">✦</span>
+    </div>
+  </div>
+
+  <!-- ============================== HOW IT THINKS ============================== -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow"><span class="idx">01</span> How it thinks</p>
+        <h2>From draft state to ranked suggestions.</h2>
         <p class="section-lede">Pyxle follows champion select as it happens and turns each draft state into concrete, explained suggestions — in three steps.</p>
       </div>
       <div class="steps">
-        <article class="step-card">
-          <p class="step-num mono">01</p>
+        <article class="card reveal" data-delay="1">
+          <p class="card-idx">01</p>
+          <div class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
           <h3>Champion select opens</h3>
-          <p>When champion select starts, Pyxle reads the current draft state from the League Client: picks, bans, and whose turn it is. The board updates as the draft unfolds.</p>
+          <p>When champion select starts, Pyxle reads the live draft state from the League Client — picks, bans, and whose turn it is. The board updates as the draft unfolds.</p>
         </article>
-        <article class="step-card">
-          <p class="step-num mono">02</p>
-          <h3>It evaluates the draft</h3>
-          <p>Pyxle scores the current position and plays out likely continuations of the draft, testing how each candidate pick or ban holds up several turns ahead.</p>
+        <article class="card reveal" data-delay="2">
+          <p class="card-idx">02</p>
+          <div class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 17l5-5 4 4 7-8"/><circle cx="4" cy="17" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="13" cy="16" r="1.4"/></svg></div>
+          <h3>It plays the draft forward</h3>
+          <p>Pyxle scores the current position and simulates likely continuations of the draft, testing how each candidate pick or ban holds up several turns ahead.</p>
         </article>
-        <article class="step-card">
-          <p class="step-num mono">03</p>
+        <article class="card reveal" data-delay="3">
+          <p class="card-idx">03</p>
+          <div class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12l4 4 10-10"/></svg></div>
           <h3>You decide</h3>
-          <p>Pyxle shows ranked suggestions with the reasoning behind them. It never picks for you — the final call is always yours. It does not play the game, read game memory, or automate gameplay.</p>
+          <p>Pyxle shows ranked suggestions with the reasoning behind them. It never picks for you — the final call is always yours. It doesn't play the game or automate anything.</p>
         </article>
       </div>
     </div>
   </section>
 
   <!-- ============================== WHAT IT WEIGHS ============================== -->
-  <section class="section" id="engine" aria-labelledby="engine-title">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow"><span class="eyebrow-idx">02</span> What it weighs</p>
-        <h2 id="engine-title">It reads the whole board, not just one pick.</h2>
+  <section class="section" id="weighs">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow"><span class="idx">02</span> What it weighs</p>
+        <h2>It reads the whole board, not just one pick.</h2>
         <p class="section-lede">Pyxle looks at how the five picks fit together and how they stand against the enemy — then explains why each suggestion makes sense right now.</p>
       </div>
-      <div class="steps steps--lettered">
-        <article class="step-card">
-          <p class="step-num mono">A</p>
-          <h3>Team composition</h3>
-          <p>It weighs how the picks fit together — damage balance, engage, and front-to-back potential — and flags where a composition is becoming one-dimensional.</p>
-        </article>
-        <article class="step-card">
-          <p class="step-num mono">B</p>
-          <h3>Matchups &amp; counters</h3>
-          <p>It considers how a pick fares into what the enemy has already shown, and what they are likely to pick or ban next.</p>
-        </article>
-        <article class="step-card">
-          <p class="step-num mono">C</p>
-          <h3>Draft timing</h3>
-          <p>It reads pick and ban order: what is safe to show now, what is worth saving, and how a choice holds up as the remaining slots fill in.</p>
-        </article>
+      <div class="weigh">
+        <div class="weigh-list" id="weighList">
+          <div class="weigh-item" data-viz="comp" aria-expanded="true" tabindex="0" role="button">
+            <div class="weigh-item-head"><span class="weigh-item-key mono">A</span><h3>Team composition</h3><span class="weigh-item-mark" aria-hidden="true"></span></div>
+            <div class="weigh-item-body"><div><p>It weighs how the picks fit together — damage balance, engage, and front-to-back potential — and flags where a composition is becoming one-dimensional.</p></div></div>
+          </div>
+          <div class="weigh-item" data-viz="counter" aria-expanded="false" tabindex="0" role="button">
+            <div class="weigh-item-head"><span class="weigh-item-key mono">B</span><h3>Matchups &amp; counters</h3><span class="weigh-item-mark" aria-hidden="true"></span></div>
+            <div class="weigh-item-body"><div><p>It considers how a pick fares into what the enemy has already shown, and what they're likely to pick or ban next.</p></div></div>
+          </div>
+          <div class="weigh-item" data-viz="timing" aria-expanded="false" tabindex="0" role="button">
+            <div class="weigh-item-head"><span class="weigh-item-key mono">C</span><h3>Draft timing</h3><span class="weigh-item-mark" aria-hidden="true"></span></div>
+            <div class="weigh-item-body"><div><p>It reads pick and ban order: what's safe to show now, what's worth saving, and how a choice holds up as the remaining slots fill in.</p></div></div>
+          </div>
+        </div>
+
+        <figure class="weigh-viz reveal" data-delay="1">
+          <svg viewBox="0 0 460 320" role="img" aria-label="Abstract diagram of a five-champion team graph with synergy and counter links the engine weighs.">
+            <defs>
+              <radialGradient id="nodeg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#9B82FF"/><stop offset="100%" stop-color="#5B2BFF"/>
+              </radialGradient>
+            </defs>
+            <g id="vizLinks" stroke="#7C5CFF" fill="none">
+              <path d="M230 60 L120 150" stroke-width="1.5" opacity="0.5"/>
+              <path d="M230 60 L340 150" stroke-width="1.5" opacity="0.5"/>
+              <path d="M120 150 L165 260" stroke-width="1.5" opacity="0.5"/>
+              <path d="M340 150 L295 260" stroke-width="1.5" opacity="0.5"/>
+              <path d="M165 260 L295 260" stroke-width="1.5" opacity="0.5"/>
+              <path d="M120 150 L340 150" stroke-width="1" opacity="0.25" stroke-dasharray="4 5"/>
+              <path d="M230 60 L165 260" stroke-width="1" opacity="0.25" stroke-dasharray="4 5"/>
+              <path d="M230 60 L295 260" stroke-width="1" opacity="0.25" stroke-dasharray="4 5"/>
+            </g>
+            <g id="vizScan"><line x1="0" y1="0" x2="460" y2="0" stroke="#9B82FF" stroke-width="1" opacity="0.5">
+              <animate attributeName="y1" values="20;300;20" dur="6s" repeatCount="indefinite"/>
+              <animate attributeName="y2" values="20;300;20" dur="6s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;0.5;0" dur="6s" repeatCount="indefinite"/>
+            </line></g>
+            <g font-family="Space Mono, monospace" font-size="11" fill="#ECEEF3" text-anchor="middle">
+              <g class="vnode"><circle cx="230" cy="60" r="22" fill="url(#nodeg)"/><text x="230" y="64">TOP</text></g>
+              <g class="vnode"><circle cx="120" cy="150" r="22" fill="url(#nodeg)"/><text x="120" y="154">JNG</text></g>
+              <g class="vnode"><circle cx="340" cy="150" r="22" fill="url(#nodeg)"/><text x="340" y="154">MID</text></g>
+              <g class="vnode"><circle cx="165" cy="260" r="22" fill="url(#nodeg)"/><text x="165" y="264">BOT</text></g>
+              <g class="vnode"><circle cx="295" cy="260" r="22" fill="url(#nodeg)"/><text x="295" y="264">SUP</text></g>
+            </g>
+          </svg>
+          <figcaption class="mono" id="vizCap" style="position:relative;z-index:1;margin-top:14px;font-size:12px;color:var(--text-3);">Weighing how the five picks fit together →</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- ====================== DATA & RIOT API USAGE ====================== -->
-  <section class="section data-band" id="data" aria-labelledby="data-title">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow"><span class="eyebrow-idx">03</span> Data &amp; Riot API usage</p>
-        <h2 id="data-title">Exactly how the Riot API is used.</h2>
-        <p class="section-lede">This section exists for one reason: transparency about how Pyxle uses data from the Riot Games API.</p>
+  <!-- ============================== DATA & RIOT API ============================== -->
+  <section class="section data-band" id="data">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow"><span class="idx">03</span> Data &amp; Riot API usage</p>
+        <h2>Exactly how the Riot API is used.</h2>
+        <p class="section-lede">This section exists for one reason: full transparency about how Pyxle uses data from the Riot Games API.</p>
       </div>
 
       <div class="facts">
-        <p class="facts-label mono">The short version</p>
-        <dl class="fact-grid">
-          <div class="fact">
-            <dt>Endpoints</dt>
-            <dd>Match-V5 (IDs, matches, timelines) + League-V4 ladder seeding</dd>
-          </div>
-          <div class="fact">
-            <dt>Purpose</dt>
-            <dd>Building the training dataset for the draft model</dd>
-          </div>
-          <div class="fact">
-            <dt>Storage</dt>
-            <dd>Internal research database — never redistributed</dd>
-          </div>
-          <div class="fact">
-            <dt>Rate limits</dt>
-            <dd>Respected by the collection pipeline</dd>
-          </div>
-        </dl>
+        <div class="fact reveal" data-delay="1"><div class="fact-num"><span class="u">~</span><span data-count="26000">0</span></div><div class="fact-k">Ranked games learned from</div></div>
+        <div class="fact reveal" data-delay="2"><div class="fact-num">5<span class="u">×</span>5</div><div class="fact-k">The board it reads</div></div>
+        <div class="fact reveal" data-delay="3"><div class="fact-num"><span data-count="4">0</span></div><div class="fact-k">Riot endpoints used</div></div>
+        <div class="fact reveal" data-delay="4"><div class="fact-num"><span class="u">0</span></div><div class="fact-k">API calls during live games</div></div>
       </div>
 
-      <div class="arch" role="img" aria-label="Data pipeline diagram: the Riot Games API (League-V4 ladder seeding plus Match-V5 match IDs, matches and timelines, rate-limit compliant) feeds an internal research dataset of about 26,000 ranked EUW matches, which is used to train the draft model that powers the suggestions shown in the Pyxle app.">
-        <div class="arch-zone arch-zone--dev">
-          <div class="arch-zone-head">
-            <span class="arch-zone-name">Data pipeline</span>
-            <span class="arch-zone-tag mono">offline batch &middot; the API key lives here, and only here</span>
-          </div>
-          <div class="arch-flow">
-            <div class="arch-node">
-              <span class="arch-node-kicker mono">Riot Games API</span>
-              <strong>Match-V5 + League-V4</strong>
-              <span class="arch-node-sub">ladder seeding, match IDs, matches + timelines &middot; rate-limit compliant</span>
-            </div>
-            <div class="arch-arrow" aria-hidden="true"><span>fetch</span></div>
-            <div class="arch-node">
-              <span class="arch-node-kicker mono">Research dataset</span>
-              <strong>~26,000 ranked matches</strong>
-              <span class="arch-node-sub">EUW &middot; internal storage, never redistributed</span>
-            </div>
-            <div class="arch-arrow" aria-hidden="true"><span>train</span></div>
-            <div class="arch-node">
-              <span class="arch-node-kicker mono">Training</span>
-              <strong>The draft model</strong>
-              <span class="arch-node-sub">learns from the dataset &middot; powers the app's suggestions</span>
-            </div>
-          </div>
+      <div class="pipeline reveal">
+        <div class="pipeline-tag"><h3>The data pipeline</h3><span class="mono">offline batch · the API key lives here, and only here</span></div>
+        <svg viewBox="0 0 1140 200" role="img" aria-label="Pipeline: the Riot Games API (League-V4 ladder seeding plus Match-V5 matches and timelines) feeds an internal research dataset of about 26,000 ranked EUW matches, which trains the draft model that powers Pyxle's suggestions. No live-game API calls.">
+          <defs>
+            <linearGradient id="pipeg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5B2BFF"/><stop offset="1" stop-color="#9B82FF"/></linearGradient>
+          </defs>
+          <g fill="none" stroke="url(#pipeg)" stroke-width="2">
+            <path class="flow-line" id="seg1" d="M250 100 H400"/>
+            <path class="flow-line" id="seg2" d="M620 100 H770"/>
+            <path class="flow-line" id="seg3" d="M990 100 H1090" stroke="#3FD9A0"/>
+          </g>
+          <g fill="#9B82FF">
+            <circle r="3.5"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1"><mpath href="#seg1"/></animateMotion></circle>
+            <circle r="3.5"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#seg1"/></animateMotion></circle>
+            <circle r="3.5"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#seg2"/></animateMotion></circle>
+            <circle r="3.5" fill="#3FD9A0"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#seg3"/></animateMotion></circle>
+          </g>
+          <g>
+            <rect x="40" y="58" width="210" height="84" rx="12" fill="rgba(124,92,255,0.08)" stroke="#7C5CFF" stroke-width="1"/>
+            <text x="60" y="88" font-family="Space Mono, monospace" font-size="11" fill="#9B82FF">RIOT GAMES API</text>
+            <text x="60" y="110" font-family="Schibsted Grotesk, sans-serif" font-size="15" fill="#ECEEF3">Match-V5 + League-V4</text>
+            <text x="60" y="128" font-family="Inter, sans-serif" font-size="11" fill="#A4A8B4">read-only · rate-limit compliant</text>
+            <rect x="400" y="58" width="220" height="84" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="420" y="88" font-family="Space Mono, monospace" font-size="11" fill="#9B82FF">RESEARCH DATASET</text>
+            <text x="420" y="110" font-family="Schibsted Grotesk, sans-serif" font-size="15" fill="#ECEEF3">~26,000 ranked matches</text>
+            <text x="420" y="128" font-family="Inter, sans-serif" font-size="11" fill="#A4A8B4">EUW · internal · never redistributed</text>
+            <rect x="770" y="58" width="220" height="84" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="790" y="88" font-family="Space Mono, monospace" font-size="11" fill="#9B82FF">TRAINING</text>
+            <text x="790" y="110" font-family="Schibsted Grotesk, sans-serif" font-size="15" fill="#ECEEF3">The draft model</text>
+            <text x="790" y="128" font-family="Inter, sans-serif" font-size="11" fill="#A4A8B4">learns the draft from the dataset</text>
+            <rect x="1090" y="58" width="10" height="84" rx="4" fill="rgba(63,217,160,0.12)" stroke="#3FD9A0" stroke-width="1"/>
+          </g>
+          <text x="1095" y="50" font-family="Space Mono, monospace" font-size="10" fill="#3FD9A0" text-anchor="end">→ APP</text>
+        </svg>
+      </div>
+
+      <h3 class="sub-title reveal">Endpoints used — the complete list</h3>
+      <div class="table-shell reveal">
+        <div class="table-scroll">
+          <table class="endpoints">
+            <thead><tr><th scope="col">Endpoint</th><th scope="col">What it returns</th><th scope="col">When it is called</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET /lol/league/v4/…by-queue/{queue}</code></td><td>Ranked ladder entries — used only to seed which players' matches to sample</td><td>Dataset builds only</td></tr>
+              <tr><td><code>GET /lol/match/v5/matches/by-puuid/{puuid}/ids</code></td><td>Recent ranked match IDs for a sampled player</td><td>Dataset builds only</td></tr>
+              <tr><td><code>GET /lol/match/v5/matches/{matchId}</code></td><td>Match details — picks, bans, outcomes</td><td>Dataset builds only</td></tr>
+              <tr><td><code>GET /lol/match/v5/matches/{matchId}/timeline</code></td><td>Match timeline events</td><td>Dataset builds only</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <h3 class="sub-title">Endpoints used — the complete list</h3>
-      <div class="table-scroll">
-        <table class="endpoint-table">
-          <thead>
-            <tr><th scope="col">Endpoint</th><th scope="col">What it returns</th><th scope="col">When it is called</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>GET /lol/league/v4/&hellip;leagues/by-queue/{queue}</code></td>
-              <td>Ranked ladder entries — used only to seed which players' matches to sample</td>
-              <td>Dataset builds only</td>
-            </tr>
-            <tr>
-              <td><code>GET /lol/match/v5/matches/by-puuid/{puuid}/ids</code></td>
-              <td>Recent ranked match IDs for a sampled player</td>
-              <td>Dataset builds only</td>
-            </tr>
-            <tr>
-              <td><code>GET /lol/match/v5/matches/{matchId}</code></td>
-              <td>Match details — picks, bans, outcomes</td>
-              <td>Dataset builds only</td>
-            </tr>
-            <tr>
-              <td><code>GET /lol/match/v5/matches/{matchId}/timeline</code></td>
-              <td>Match timeline events</td>
-              <td>Dataset builds only</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="assurance-grid">
-        <div class="assurance-card assurance-card--yes">
-          <h3>How the API is used</h3>
+      <div class="assure">
+        <div class="assure-card assure-card--yes reveal" data-delay="1">
+          <h3><span class="tick" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3.5 3.5L13 4"/></svg></span> How the API is used</h3>
           <ul class="mark-list mark-list--yes">
             <li>Read-only match data: League-V4 ladder seeding, Match-V5 IDs, matches and timelines — nothing else</li>
             <li>Batch dataset builds, separate from the app itself</li>
@@ -351,8 +251,8 @@
             <li>Data used solely to train the draft model</li>
           </ul>
         </div>
-        <div class="assurance-card assurance-card--no">
-          <h3>What never happens</h3>
+        <div class="assure-card assure-card--no reveal" data-delay="2">
+          <h3><span class="tick" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg></span> What never happens</h3>
           <ul class="mark-list mark-list--no">
             <li>No real-time Riot API calls during games</li>
             <li>No per-player profiling, no public player lookups</li>
@@ -362,74 +262,54 @@
         </div>
       </div>
 
-      <aside class="callout">
+      <aside class="callout reveal">
         <p><strong>Suggestion-only by design.</strong> Pyxle suggests picks and bans during champion select and explains its reasoning — the player always makes the final call. It does not play the game, does not read game memory, and does not automate gameplay.</p>
       </aside>
-
-      <aside class="reviewer-note">
-        <p class="reviewer-note-kicker mono">Reviewing a Riot Developer Portal application?</p>
+      <aside class="reviewer reveal">
+        <p class="reviewer-k mono">Reviewing a Riot Developer Portal application?</p>
         <p>The endpoint table above is the complete scope of Pyxle's Riot API usage. Match data collected through the API is used exclusively to build the training dataset for the draft model — it is never redistributed, resold, or exposed through player lookups, and <strong>no Riot API calls are made during live games</strong>.</p>
       </aside>
     </div>
   </section>
 
   <!-- ============================== STATUS ============================== -->
-  <section class="section status-band" id="status" aria-labelledby="status-title">
-    <div class="container container--narrow">
-      <div class="section-head">
-        <p class="eyebrow"><span class="eyebrow-idx">04</span> Status</p>
-        <h2 id="status-title">In development. Coming soon.</h2>
-        <p class="section-lede">Pyxle is currently an internal developer beta. The engine, the training pipeline, and the desktop client are under active development — release details will be announced on this page.</p>
+  <section class="section status-band" id="status">
+    <canvas class="status-field" id="statusField" aria-hidden="true"></canvas>
+    <div class="wrap wrap--narrow">
+      <div class="section-head reveal">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Status</p>
+        <h2>In development. Coming soon.</h2>
+        <p class="section-lede" style="margin-inline:auto;">Pyxle is currently an internal developer beta. The engine, the training pipeline, and the desktop client are under active development — release details will be announced on this page.</p>
       </div>
-      <aside class="callout">
-        <p><strong>No sign-ups, no waitlist — on purpose.</strong> We would rather show a finished product than collect emails for an unfinished one. When Pyxle is ready, this page is where you will find it.</p>
+      <aside class="callout reveal" style="text-align:left;">
+        <p><strong>No sign-ups, no waitlist — on purpose.</strong> We would rather show a finished product than collect emails for an unfinished one. When Pyxle is ready, this page is where you'll find it.</p>
       </aside>
     </div>
   </section>
 
-  <!-- ================================ FAQ ================================ -->
-  <section class="section" id="faq" aria-labelledby="faq-title">
-    <div class="container container--narrow">
-      <div class="section-head">
-        <p class="eyebrow"><span class="eyebrow-idx">05</span> FAQ</p>
-        <h2 id="faq-title">Honest answers to fair questions.</h2>
+  <!-- ============================== FAQ ============================== -->
+  <section class="section" id="faq">
+    <div class="wrap wrap--narrow">
+      <div class="section-head reveal">
+        <p class="eyebrow"><span class="idx">04</span> FAQ</p>
+        <h2>Honest answers to fair questions.</h2>
       </div>
-      <div class="faq-list">
+      <div class="faq reveal">
         <details class="faq-item">
-          <summary>
-            <h3>Is this allowed by Riot Games?</h3>
-            <span class="faq-marker" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-body">
-            <p>Pyxle sits in the established category of champion-select assistance tools: it works with the draft phase only and makes suggestions — it never touches a live game, never reads game memory, and never automates gameplay. This page documents the project's Riot API usage in full, and the complete required disclaimer appears in the footer. Pyxle is not endorsed by Riot Games.</p>
-          </div>
+          <summary class="faq-q"><h3>Is this allowed by Riot Games?</h3><span class="faq-mark" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p>Pyxle sits in the established category of champion-select assistance tools: it works with the draft phase only and makes suggestions — it never touches a live game, never reads game memory, and never automates gameplay. This page documents the project's Riot API usage in full, and the complete required disclaimer appears in the footer. Pyxle is not endorsed by Riot Games.</p></div>
         </details>
         <details class="faq-item">
-          <summary>
-            <h3>Does it play the game for me?</h3>
-            <span class="faq-marker" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-body">
-            <p>No. Pyxle suggests picks and bans during champion select and explains its reasoning — the decision is always yours. It does not play the game, does not read game memory, and does not automate gameplay.</p>
-          </div>
+          <summary class="faq-q"><h3>Does it play the game for me?</h3><span class="faq-mark" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p>No. Pyxle suggests picks and bans during champion select and explains its reasoning — the decision is always yours. It does not play the game, does not read game memory, and does not automate gameplay.</p></div>
         </details>
         <details class="faq-item">
-          <summary>
-            <h3>When can I use it?</h3>
-            <span class="faq-marker" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-body">
-            <p>Pyxle is in active development and not yet publicly available. There is no waitlist — release details will be announced on this page when the product is ready.</p>
-          </div>
+          <summary class="faq-q"><h3>When can I use it?</h3><span class="faq-mark" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p>Pyxle is in active development and not yet publicly available. There is no waitlist — release details will be announced on this page when the product is ready.</p></div>
         </details>
         <details class="faq-item">
-          <summary>
-            <h3>Where does the draft knowledge come from?</h3>
-            <span class="faq-marker" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-body">
-            <p>From a model trained on ~26,000 ranked matches collected through the Riot Games API (the endpoints listed above). The data is used solely for training and is never redistributed.</p>
-          </div>
+          <summary class="faq-q"><h3>Where does the draft knowledge come from?</h3><span class="faq-mark" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p>From a model trained on ~26,000 ranked matches collected through the Riot Games API (the endpoints listed above). The data is used solely for training and is never redistributed.</p></div>
         </details>
       </div>
     </div>
@@ -438,64 +318,157 @@
 </main>
 
 <!-- ============================== FOOTER ============================== -->
-<footer class="site-footer">
-  <div class="container">
+<footer class="footer">
+  <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
         <a class="brand" href="#top" aria-label="Pyxle — back to top">
-          <span class="brand-mark" aria-hidden="true">
-            <span class="px px1"></span><span class="px px2"></span>
-            <span class="px px3"></span><span class="px px4"></span>
-          </span>
-          <span class="brand-word">Pyxle</span>
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span>Pyxle</span>
         </a>
         <p class="footer-blurb">AI draft analysis for League of Legends champion select.</p>
       </div>
-      <nav class="footer-links" aria-label="Footer navigation">
+      <nav class="footer-links" aria-label="Footer">
         <a href="#data">Data &amp; API usage</a>
         <a href="#status">Status</a>
+        <a href="#faq">FAQ</a>
         <a href="#top">Back to top</a>
       </nav>
     </div>
     <p class="legal">Pyxle isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends &copy; Riot Games, Inc.</p>
-    <p class="footer-meta">&copy; 2026 Pyxle &middot; Developer Beta</p>
+    <p class="footer-meta">&copy; 2026 Pyxle · Developer Beta</p>
   </div>
 </footer>
 
 <script>
 (function () {
-  var btn = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('site-nav');
-  if (!btn || !nav) return;
-  btn.addEventListener('click', function () {
-    var open = document.body.classList.toggle('nav-open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  nav.addEventListener('click', function (e) {
-    if (e.target.closest('a') && document.body.classList.contains('nav-open')) {
-      document.body.classList.remove('nav-open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var motionOK = !window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (motionOK && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('is-in');
-          io.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
-    // Reveal is opt-in per element. The transparency block (fact grid, pipeline
-    // diagram, endpoint table, assurances) is deliberately excluded so Riot-API
-    // content is never momentarily invisible mid-animation.
-    document.querySelectorAll('.section-head, .step-card, .callout, .reviewer-note, .faq-item').forEach(function (el) {
-      el.classList.add('reveal');
-      io.observe(el);
+  /* ---- cursor glow ---- */
+  var glow = document.querySelector('.cursor-glow');
+  if (glow && window.matchMedia('(pointer:fine)').matches) {
+    var gx = 0, gy = 0, tx = 0, ty = 0, raf;
+    window.addEventListener('pointermove', function (e) {
+      document.body.classList.add('has-pointer'); tx = e.clientX; ty = e.clientY;
+      if (!raf) raf = requestAnimationFrame(loop);
     });
+    function loop() { gx += (tx - gx) * 0.16; gy += (ty - gy) * 0.16;
+      glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px)';
+      raf = (Math.abs(tx - gx) > 0.5 || Math.abs(ty - gy) > 0.5) ? requestAnimationFrame(loop) : null; }
   }
+
+  /* ---- scroll progress + nav ---- */
+  var progress = document.getElementById('progress'), nav = document.getElementById('nav');
+  function onScroll() {
+    var sc = document.documentElement.scrollTop || document.body.scrollTop;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = 'scaleX(' + (max > 0 ? sc / max : 0) + ')';
+    if (nav) nav.classList.toggle('scrolled', sc > 12);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* ---- mobile menu ---- */
+  var toggle = document.getElementById('navToggle'), menu = document.getElementById('menu');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var open = document.body.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) { document.body.classList.remove('nav-open'); toggle.setAttribute('aria-expanded', 'false'); } });
+  }
+
+  /* ---- scroll reveal ---- */
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else { document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); }); }
+
+  /* ---- count-up ---- */
+  function countUp(el) {
+    var target = +el.getAttribute('data-count'), dur = 1400, start = null;
+    function tick(ts) { if (!start) start = ts; var p = Math.min((ts - start) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * e).toLocaleString();
+      if (p < 1) requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  if ('IntersectionObserver' in window && !reduce) {
+    var cio = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { countUp(en.target); cio.unobserve(en.target); } }); }, { threshold: 0.6 });
+    document.querySelectorAll('[data-count]').forEach(function (el) { cio.observe(el); });
+  } else { document.querySelectorAll('[data-count]').forEach(function (el) { el.textContent = (+el.getAttribute('data-count')).toLocaleString(); }); }
+
+  /* ---- weigh accordion + viz ---- */
+  var caps = { comp: 'Weighing how the five picks fit together →', counter: 'Weighing each pick against the enemy draft →', timing: 'Weighing pick & ban order, turn by turn →' };
+  var vizCap = document.getElementById('vizCap');
+  var items = Array.prototype.slice.call(document.querySelectorAll('#weighList .weigh-item'));
+  function selectWeigh(el) {
+    items.forEach(function (it) { it.setAttribute('aria-expanded', it === el ? 'true' : 'false'); });
+    var key = el.getAttribute('data-viz'); if (vizCap && caps[key]) vizCap.textContent = caps[key];
+  }
+  items.forEach(function (el) {
+    el.addEventListener('click', function () { selectWeigh(el); });
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectWeigh(el); } });
+  });
+  /* gentle auto-cycle until the user interacts */
+  var userTouched = false, ci = 0;
+  items.forEach(function (el) { el.addEventListener('click', function () { userTouched = true; }); });
+  if (!reduce) { var cycle = setInterval(function () { if (userTouched) { clearInterval(cycle); return; } ci = (ci + 1) % items.length; selectWeigh(items[ci]); }, 3200); }
+
+  /* ---- living pixel field (reusable) ---- */
+  function initField(canvas, opts) {
+    opts = opts || {};
+    var ctx = canvas.getContext('2d'), CELL = opts.cell || 16, base = opts.base || 0.05, density = opts.density || 0.12;
+    var cols, rows, grid, next, dpr, t = 0, VW = 0, VH = 0;
+    var fx = 0.66, fy = 0.5, tx = 0.66, ty = 0.5, genEl = opts.genEl;
+    function seed() { grid = new Uint8Array(cols * rows);
+      for (var i = 0; i < grid.length; i++) grid[i] = Math.random() < density ? 1 : 0;
+      var gl = [[1,0],[2,1],[0,2],[1,2],[2,2]];
+      for (var g = 0; g < (opts.gliders || 5); g++) { var ox = (Math.random()*(cols-4))|0, oy = (Math.random()*(rows-4))|0;
+        for (var k = 0; k < gl.length; k++) { var x = ox+gl[k][0], y = oy+gl[k][1]; if (x<cols&&y<rows) grid[y*cols+x]=1; } } }
+    function resize() { dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var host = canvas.parentElement || document.body;
+      var w = canvas.clientWidth || host.clientWidth || window.innerWidth, h = canvas.clientHeight || host.clientHeight || 600;
+      VW = w; VH = h; canvas.width = Math.floor(w*dpr); canvas.height = Math.floor(h*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+      cols = Math.ceil(w/CELL); rows = Math.ceil(h/CELL); seed(); render(); }
+    function step() { next = next && next.length === grid.length ? next : new Uint8Array(grid.length);
+      for (var y=0;y<rows;y++) for (var x=0;x<cols;x++) { var n=0;
+        for (var dy=-1;dy<=1;dy++) for (var dx=-1;dx<=1;dx++) { if(!dx&&!dy)continue; n += grid[((y+dy+rows)%rows)*cols+((x+dx+cols)%cols)]; }
+        var a = grid[y*cols+x]; next[y*cols+x] = (a&&(n===2||n===3))||(!a&&n===3)?1:0; }
+      var tmp=grid; grid=next; next=tmp;
+      if (t % 16 === 0) { var px=(Math.random()*(cols-5))|0, py=(Math.random()*(rows-5))|0;
+        for (var j=0;j<12;j++) grid[((py+(j/4|0))*cols)+(px+(j%4))] = Math.random()<0.5?1:0; } }
+    function render() { var w=VW, h=VH; ctx.clearRect(0,0,w,h);
+      if (!opts.fixedFocus) { tx = 0.66 + 0.16*Math.sin(t*0.009); ty = 0.5 + 0.22*Math.cos(t*0.0072); }
+      fx += (tx-fx)*0.06; fy += (ty-fy)*0.06;
+      var cx = w*fx, cy = h*fy, R = Math.min(w,h)*(opts.radius || 0.26);
+      var gl = ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.7);
+      gl.addColorStop(0,'rgba(124,92,255,0.14)'); gl.addColorStop(0.55,'rgba(124,92,255,0.05)'); gl.addColorStop(1,'rgba(124,92,255,0)');
+      ctx.fillStyle = gl; ctx.fillRect(0,0,w,h);
+      var gap=3, s=CELL-gap;
+      for (var y=0;y<rows;y++) for (var x=0;x<cols;x++) { if(!grid[y*cols+x])continue;
+        var pxx=x*CELL, pyy=y*CELL, d=Math.hypot(pxx+CELL/2-cx, pyy+CELL/2-cy);
+        if (d<R) ctx.fillStyle = 'rgba(155,130,255,'+(0.85-0.5*(d/R)).toFixed(3)+')';
+        else if (d<R*1.5) ctx.fillStyle = 'rgba(124,92,255,0.20)';
+        else ctx.fillStyle = 'rgba(255,255,255,'+base+')';
+        ctx.fillRect(pxx,pyy,s,s); }
+      ctx.strokeStyle='rgba(124,92,255,0.30)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
+      if (genEl) genEl.textContent = 'gen ' + (4000+t).toLocaleString(); }
+    canvas.__pointer = function (nx, ny) { if (opts.cursor) { tx = nx; ty = ny; } };
+    window.addEventListener('resize', resize);
+    if ('ResizeObserver' in window) { var ro = new ResizeObserver(function () { var w = canvas.clientWidth || 0; if (w && Math.abs(w-VW)>2) resize(); }); ro.observe(canvas.parentElement || document.body); }
+    resize(); for (var w0=0; w0<5; w0++){ t++; step(); } render();
+    if (!reduce) setInterval(function(){ t++; step(); render(); }, opts.interval || 160);
+  }
+
+  var heroCanvas = document.getElementById('field');
+  if (heroCanvas) {
+    initField(heroCanvas, { cursor: true, genEl: document.getElementById('gen') });
+    var stage = heroCanvas.parentElement;
+    stage.addEventListener('pointermove', function (e) { var r = stage.getBoundingClientRect();
+      heroCanvas.__pointer((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height); });
+  }
+  var statusCanvas = document.getElementById('statusField');
+  if (statusCanvas) initField(statusCanvas, { cell: 18, base: 0.04, density: 0.10, radius: 0.3, fixedFocus: false, interval: 200 });
 })();
 </script>
 </body>
